@@ -1,54 +1,38 @@
-import React , { Component } from 'react';
-import Left from './components/Left'
-import './App.css'
-import Right from './components/Right'
+import React from 'react'
+import  Users from './components/User'
+import  Main  from './components/Main'
+import {connect} from 'react-redux'
+import {setName} from './actions/userActions'
 
-class App extends Component {
+class App extends React.Component {
+    
 
-  state = {
-    text: ''
-  }
-
-handleChange = (e) => {
-  const {name, value} = e.target
-  this.setState({
-    [name]: value
-  })
+    render() {
+      return (
+        <div className="container">
+          <Main changeUsername={this.props.setName} />
+          <Users username={this.props.user.name} />
+        </div>
+      )
+    }
 }
 
-handleSubmit = (e) => {
-  e.preventDefault()
-  this.state.text.length > 0 ? this.props.getWeather(this.state.text) : alert("Please enter city name")
-  this.setState({
-    text: ''
-  })
+const mapStateToProps = (state) => {
+  return {
+      user: state.userReducer,
+      math: state.mathReducer
+  };
 }
 
-  render() {
-    return (
-      <div className="App">
-        <Left className="left"/>
-        <Right className="right"/>
-      </div>
-    )
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setName: (name) => {
+      dispatch(setName(name))
+    }
   }
 }
 
-export default App
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 
 
